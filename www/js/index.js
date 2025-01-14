@@ -24,6 +24,7 @@ window.onload = (event) => {
         };
         htmlText += '</ul>' + "\n";
         $("#question-tab").html(htmlText);
+
     }).fail(function () {
         alert("ERROR");
     });
@@ -49,4 +50,24 @@ window.onload = (event) => {
             alert("ERROR");
         });
     });
+
+    $('#btnCamara').on('click', function () {
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI
+        });
+
+        function onSuccess(imageURI) {
+            localStorage.setItem('cameraImage', imageURI);
+            $('#imgCamara').attr('src', imageURI);
+        }
+
+        function onFail(message) {
+            console.error('Failed to take picture: ' + message);
+        }
+    });
+
+    if (localStorage.getItem('cameraImage')) {
+        $('#imgCamara').attr('src', localStorage.getItem('cameraImage'));
+    }
 };
